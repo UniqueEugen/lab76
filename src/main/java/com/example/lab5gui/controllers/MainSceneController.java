@@ -3,12 +3,11 @@ package com.example.lab5gui.controllers;
 import com.example.lab5gui.FerretApp;
 import com.example.lab5gui.converters.StringConverterFerret;
 import com.example.lab5gui.dao.DB;
+import com.example.lab5gui.entities.FerretDB;
 import com.example.lab5gui.entities.SearchItem;
 import com.example.lab5gui.entities.ferret.Ferret;
-import com.example.lab5gui.entities.FerretDB;
 import com.example.lab5gui.entities.master.MasterEntity;
 import com.example.lab5gui.service.MasterService;
-import com.example.lab5gui.service.MasterServiceImpl;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
@@ -76,8 +75,9 @@ public class MainSceneController {
     private String fType;
     private ArrayList<SearchItem> searchList;
     private int iteratorSearchWord;
-    private MasterService masterService = new MasterServiceImpl();
-    public void setFerretApp(FerretApp ferretApp) {
+    private MasterService masterService;
+    public void setFerretApp(FerretApp ferretApp, MasterService masterService) {
+        this.masterService = masterService;
         this.ferretApp = ferretApp;
         //ferrets.setItems(ferretApp.getListFerret());
         martenCol.getItems().addAll(ferretApp.getListMarten());

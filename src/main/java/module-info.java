@@ -14,9 +14,16 @@ module com.example.lab5gui {
     requires java.sql;
     requires java.persistence;
     requires java.naming;
+    requires spring.core;
+    requires spring.boot;
     requires org.hibernate.orm.core;
     requires static javassist;
-    opens com.example.lab5gui to javafx.fxml;
+    requires spring.data.jpa;
+    requires spring.data.commons;
+    requires spring.beans;
+    requires spring.context;
+    requires spring.boot.autoconfigure;
+    opens com.example.lab5gui to javafx.fxml, spring.core;
     exports com.example.lab5gui;
     exports com.example.lab5gui.controllers;
     opens com.example.lab5gui.controllers to javafx.fxml;

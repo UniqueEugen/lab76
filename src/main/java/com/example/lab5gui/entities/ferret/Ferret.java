@@ -8,7 +8,6 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import lombok.Data;
-
 import java.util.HashMap;
 import java.util.Map;
 

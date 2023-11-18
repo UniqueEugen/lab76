@@ -1,18 +1,14 @@
 package com.example.lab5gui.controllers;
 
-import com.example.lab5gui.dao.DB;
 import com.example.lab5gui.entities.ferret.FerretEntity;
 import com.example.lab5gui.entities.master.MasterEntity;
 import com.example.lab5gui.service.MasterService;
-import com.example.lab5gui.service.MasterServiceImpl;
 import javafx.fxml.FXML;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 import lombok.Data;
-
-import java.sql.SQLException;
 
 @Data
 public class AddController {
@@ -28,10 +24,15 @@ public class AddController {
     private RadioButton masterRadio;
     @FXML
     private ToggleGroup ferretType;
+    private MasterService masterService;
+
+
+    public void set(MasterService masterService){
+        this.masterService = masterService;
+    }
 
     @FXML
     private void ok(){
-        MasterService masterService = new MasterServiceImpl();
         if(nickName != null && !nickName.getText().isEmpty()){
             if (((RadioButton)ferretType.getSelectedToggle()).getText().equals("Master")){
                 masterService.addMaster(new MasterEntity(nickName.getText()));

@@ -1,25 +1,38 @@
 package com.example.lab5gui.service;
 
-import com.example.lab5gui.dao.MasterDao;
-import com.example.lab5gui.dao.MasterDaoImpl;
+import com.example.lab5gui.dao.FerretRepository;
 import com.example.lab5gui.entities.FerretDB;
 import com.example.lab5gui.entities.master.MasterEntity;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import lombok.NoArgsConstructor;
 import org.hibernate.HibernateError;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
+@NoArgsConstructor
 public class MasterServiceImpl implements MasterService {
 
-    MasterDao masterDao = new MasterDaoImpl();
+   // MasterDao masterDao = new MasterDaoImpl();
 
-    public MasterServiceImpl() {}
+    /*@Autowired
+    private EntityManager entityManager;
+    RepositoryFactorySupport factory = new JpaRepositoryFactory(entityManager);
+    private FerretRepository ferretRepository = factory.getRepository(FerretRepository.class) ;*/
+    private FerretRepository ferretRepository;
+    @Autowired
+    public MasterServiceImpl(FerretRepository repository) {
+        this.ferretRepository = repository;
+    }
 
     @Override
     public boolean addMaster(MasterEntity master) {
         boolean isAdded = false;
         try {
-            masterDao.addMaster(master);
+            ferretRepository.save(master);
             isAdded = true;
         }
         catch (HibernateError e) {
@@ -32,7 +45,7 @@ public class MasterServiceImpl implements MasterService {
     public boolean updateMaster(MasterEntity master) {
         boolean isUpdated = false;
         try {
-            masterDao.updateMaster(master);
+            ferretRepository.save(master);
             isUpdated = true;
         }
         catch (HibernateError e) {
@@ -45,7 +58,7 @@ public class MasterServiceImpl implements MasterService {
     public boolean deleteMaster(int id) {
         boolean isDeleted=false;
         try {
-            masterDao.deleteMaster(id);
+            ferretRepository.deleteById(id);
             isDeleted = true;
         }
         catch (HibernateError e) {
@@ -57,7 +70,7 @@ public class MasterServiceImpl implements MasterService {
     @Override
     public  List<MasterEntity> showMasters() {
         try {
-            return masterDao.showMasters();
+            return (List<MasterEntity>) ferretRepository.findAll();
         }
         catch (HibernateError e) {
             ShowException.showNotice(e);
@@ -68,7 +81,7 @@ public class MasterServiceImpl implements MasterService {
     @Override
     public MasterEntity findMasterById(int id){
         try {
-            return masterDao.findMasterById(id);
+            return ferretRepository.findById(id).get();
         }
         catch (HibernateError e) {
             ShowException.showNotice(e);
@@ -79,9 +92,15 @@ public class MasterServiceImpl implements MasterService {
     @Override
     public ObservableList<FerretDB> getOtters() {
         try {
-            return masterDao.getOtters();
-        }
-        catch (HibernateError e) {
+            ObservableList<FerretDB> otters = FXCollections.observableArrayList();
+            ferretRepository.findAll().forEach(master ->
+                    master.getFerretEntities().forEach(ferretEntity -> {
+                        if (ferretEntity.getType().equals("Otter")) {
+                            otters.add(new FerretDB(ferretEntity.getIndex(), ferretEntity.getName()));
+                        }
+                    }));
+            return otters;
+        } catch (HibernateError e) {
             ShowException.showNotice(e);
             return null;
         }
@@ -90,9 +109,15 @@ public class MasterServiceImpl implements MasterService {
     @Override
     public ObservableList<FerretDB> getMartens() {
         try {
-            return masterDao.getMartens();
-        }
-        catch (HibernateError e) {
+            ObservableList<FerretDB> martens = FXCollections.observableArrayList();
+            ferretRepository.findAll().forEach(master ->
+                    master.getFerretEntities().forEach(ferretEntity -> {
+                        if (ferretEntity.getType().equals("Marten")) {
+                            martens.add(new FerretDB(ferretEntity.getIndex(), ferretEntity.getName()));
+                        }
+                    }));
+            return martens;
+        } catch (HibernateError e) {
             ShowException.showNotice(e);
             return null;
         }

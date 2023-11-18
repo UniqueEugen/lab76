@@ -1,8 +1,6 @@
 package com.example.lab5gui.entities.ferret;
 
 import com.example.lab5gui.entities.master.MasterEntity;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.StringProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

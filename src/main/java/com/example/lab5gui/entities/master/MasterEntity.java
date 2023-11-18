@@ -1,18 +1,12 @@
 package com.example.lab5gui.entities.master;
 
-import com.example.lab5gui.entities.ferret.Ferret;
 import com.example.lab5gui.entities.ferret.FerretEntity;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Map;
 
 @Data
 @AllArgsConstructor
