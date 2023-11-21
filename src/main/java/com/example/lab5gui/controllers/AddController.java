@@ -9,8 +9,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 import lombok.Data;
+import org.springframework.stereotype.Component;
+import net.rgielen.fxweaver.core.FxmlView;
 
 @Data
+@Component
+@FxmlView("AddScene.fxml")
 public class AddController {
     private Stage dialogStage;
 

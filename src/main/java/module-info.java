@@ -11,6 +11,7 @@ module com.example.lab5gui {
     requires com.fasterxml.jackson.databind;
     requires static lombok;
     requires MyLibrary;
+    requires net.rgielen.fxweaver.core;
     requires java.sql;
     requires java.persistence;
     requires java.naming;

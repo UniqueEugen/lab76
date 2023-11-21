@@ -13,6 +13,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import lombok.Data;
 import myLibrary.console.Console;
+import net.rgielen.fxweaver.core.FxmlView;
+import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
 import java.sql.SQLException;
@@ -23,6 +25,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Data
+@Component
+@FxmlView("MainScene.fxml")
 public class MainSceneController {
     public static final String MARTEN = "Marten";
     //@FXML

@@ -7,23 +7,27 @@ import com.example.lab5gui.service.MasterService;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.Data;
+import net.rgielen.fxweaver.core.FxWeaver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-@Data
+
 @SpringBootApplication
+@Data
 public class FerretApp extends Application {
     private Stage primaryStage;
     private AnchorPane rootLayout;
@@ -55,9 +59,10 @@ public class FerretApp extends Application {
     //getters/setters
 
     @Override
-    public void init() throws Exception {
-        springContext = SpringApplication.run(getClass());
-        springContext.getAutowireCapableBeanFactory().autowireBean(this);
+    public void init(){
+        springContext = new SpringApplicationBuilder()
+                .sources(this.getClass())
+                .run();
     }
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -72,34 +77,34 @@ public class FerretApp extends Application {
         loader.setLocation(FerretApp.class.getResource("/scenes/MainScene.fxml"));
         rootLayout = loader.load();
         Scene scene = new Scene(rootLayout);*/
-        Scene scene = new Scene(view.getView());
+        FxWeaver fxWeaver = springContext.getBean(FxWeaver.class);
+        Parent root = fxWeaver.loadView(MainSceneController.class);
+        Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         InputStream iconStream = getClass().getResourceAsStream("/images/Icon.jpg");
         Image image = new Image(iconStream);
         primaryStage.getIcons().add(image);
         listMarten = masterService.getMartens();
         listOtter = masterService.getOtters();
-        MainSceneController controller = (MainSceneController) view.getController();
+        MainSceneController controller = fxWeaver.loadController(MainSceneController.class);
         controller.setFerretApp(this, masterService);
         primaryStage.show();
     }
     public void showCreateWindow() {
-        try {
-            FXMLLoader loader = new FXMLLoader();
+        FxWeaver fxWeaver = springContext.getBean(FxWeaver.class);
+            /*FXMLLoader loader = new FXMLLoader();
             loader.setLocation(FerretApp.class.getResource("/scenes/AddScene.fxml"));
-            AnchorPane page = loader.load();
-            Stage dialogStage = new Stage();
-            dialogStage.setTitle("Ng-ng-ng");
-            dialogStage.initModality(Modality.WINDOW_MODAL);
-            dialogStage.initOwner(primaryStage);
-            dialogStage.setScene(new Scene(page));
-            AddController controller = loader.getController();
-            controller.set(masterService);
-            controller.setDialogStage(dialogStage);
-            dialogStage.showAndWait();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            AnchorPane page = loader.load();*/
+        AnchorPane page = fxWeaver.loadView(AddController.class);
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Ng-ng-ng");
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        dialogStage.initOwner(primaryStage);
+        dialogStage.setScene(new Scene(page));
+        AddController controller = fxWeaver.loadController(AddController.class);
+        controller.set(masterService);
+        controller.setDialogStage(dialogStage);
+        dialogStage.showAndWait();
     }
     @Override
     public void stop() throws Exception {
